@@ -106,17 +106,17 @@ public:
 		return NDArray::random_values(1, size_cols);
 	}
 
-	NDArray operator+(NDArray& other)
+	NDArray operator+(NDArray& other)	// Оператор поэлементного сложения
 	{
 		return element_wise_operator(other, [](T a, T b) {return a + b; });
 	}
 
-	NDArray operator-(NDArray& other)
+	NDArray operator-(NDArray& other)	// Оператор поэлементного вычитания
 	{
 		return element_wise_operator(other, [](T a, T b) {return a - b; });
 	}
 
-	NDArray operator*(NDArray other)
+	NDArray operator*(NDArray other)	// Оператор поэлементного умножения и матричного умножения
 	{
 		if (this->ndim == 2)
 		{
@@ -148,7 +148,7 @@ public:
 		return NDArray(1, 0);
 	}
 
-	NDArray operator/(NDArray& other)
+	NDArray operator/(NDArray& other)	// Оператор поэлементного деления
 	{
 		return element_wise_operator(other, [](T a, T b) {return a / b; });
 	}
@@ -168,7 +168,7 @@ public:
 		return res;
 	}
 
-	T max()
+	T max()	// Операция сокращения: максимум для определенной размерности
 	{
 		T  res = (*this)[std::make_pair(0, 0)];
 
@@ -183,7 +183,7 @@ public:
 		return res;
 	}
 
-	T min()
+	T min()	// Операция сокращения: минимум для определенной размерности
 	{
 		T  res = (*this)[std::make_pair(0, 0)];
 
@@ -198,7 +198,7 @@ public:
 		return res;
 	}
 
-	T avg()
+	T avg()	// Операция сокращения: среднее для определенной размерности
 	{
 		return this->summ() / this->size;
 	}
@@ -242,7 +242,7 @@ public:
 		}
 	}
 
-	NDArray transpose()
+	NDArray transpose()	// Метод для транспонирования
 	{
 		NDArray res(this->shape.second, this->shape.first, 0);
 
@@ -266,7 +266,7 @@ public:
 		return *this;
 	}
 
-	NDArray get_row(int n) const
+	NDArray get_row(int n) const	// Взятие среза без выделения новой памяти, т.е. изменения в срезе должны менять исходный массив
 	{
 		assert(n < this->shape.first);
 
@@ -284,7 +284,7 @@ public:
 		return res;
 	}
 
-	NDArray get_col(int n) const
+	NDArray get_col(int n) const	// Взятие среза без выделения новой памяти, т.е. изменения в срезе должны менять исходный массив
 	{
 		assert(n < this->shape.second);
 
@@ -339,6 +339,11 @@ public:
 		if (this->offset == nullptr)
 		{
 			delete[] this->ptr;
+		}
+
+		if (this->offset)
+		{
+			delete this->offset;
 		}
 
 		return;
