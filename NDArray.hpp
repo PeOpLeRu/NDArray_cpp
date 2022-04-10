@@ -1,4 +1,4 @@
-﻿#pragma once
+﻿// #pragma once
 
 #include <type_traits>
 
@@ -38,11 +38,11 @@ public:
 		{
 			this->ptr[i] = fill;
 		}
-		
+
 		return;
 	}
 
-	NDArray(int size_rows, int size_cols, T fill) : NDArray(size_rows * size_cols, fill)	 // Создание пустого двумерного массива заданного размера and Создание двумерного массива заполненного нулями
+	NDArray(int size_rows, int size_cols, T fill) : NDArray(size_rows* size_cols, fill)	 // Создание пустого двумерного массива заданного размера and Создание двумерного массива заполненного нулями
 	{
 		this->ndim = size_rows > 1 ? 2 : 1;
 		this->shape.first = size_rows;
@@ -72,7 +72,7 @@ public:
 		{
 			this->ptr = other.ptr;
 			this->offset = new std::vector<int>;
-			for (int i = 0; i < other.offset->size(); i++)
+			for (unsigned long long int i = 0; i < other.offset->size(); i++)
 			{
 				this->offset->push_back(other.offset->at(i));
 			}

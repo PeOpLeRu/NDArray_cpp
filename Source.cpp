@@ -17,7 +17,7 @@ int main()
 		arr_1[i] = i;
 		arr_2[i] = i + 1;
 	}
-	
+
 	std::cout << "Arr 1 == " << arr_1 << std::endl << std::endl;
 	std::cout << "Arr 2 == " << arr_2 << std::endl << std::endl;
 	auto res = arr_1 * arr_2;
@@ -37,7 +37,7 @@ int main()
 	std::cout << "\n1 col of arr == " << col << std::endl << std::endl;
 
 	std::cout << "Copy_arr == \n" << copy_arr << std::endl << std::endl;
-	
+
 	arr[pair<int, int>(0, 0)] = 0;
 	arr[pair<int, int>(0, 1)] = 1;
 	arr[pair<int, int>(0, 2)] = 2;
@@ -58,11 +58,11 @@ int main()
 	std::cout << "avg == " << for_test.avg() << std::endl;
 	std::cout << "summ == " << for_test.summ() << std::endl;
 
-	std::cout << "summ of "<< for_test .get_row(1) << " == " << for_test.get_row(1).summ() << std::endl;
+	std::cout << "summ of " << for_test.get_row(1) << " == " << for_test.get_row(1).summ() << std::endl;
 	std::cout << "min of " << for_test.get_row(1) << " == " << for_test.get_row(1).min() << std::endl;
 	std::cout << "min of " << for_test.get_row(2) << " == " << for_test.get_row(2).min() << std::endl;
 	//std::cout << arr[1];
 	//NDArray<int>::random_values(1);
-	
+
 	return 0;
 }

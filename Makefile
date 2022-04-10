@@ -1,13 +1,17 @@
 CXX=g++
 CFLAGS=-Wall --std=c++11
 
-first: Source.cpp NDArray.hpp
-	$(CXX) $(CFLAGS) Source.cpp NDArray.hpp -o Source
+first: Source.cpp
+	$(CXX) $(CFLAGS) -c Source.cpp -o Source.o
 
-all: first
+second: NDArray.hpp
+	$(CXX) $(CFLAGS) -c NDArray.hpp -o NDArray.o
+
+all: first second
+	$(CXX) $(CFLAGS) Source.o -o Source
 
 clear:
-	del *.0 *.gch *.txt
+	del *.0 *.gch *.txt *.o
 
-run: all
+run: all clear
 	Source
