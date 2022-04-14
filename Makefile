@@ -10,8 +10,8 @@ second: NDArray.hpp
 all: first second
 	$(CXX) $(CFLAGS) Source.o -o Source
 
-clear:
-	del *.0 *.gch *.txt *.o
+clean:
+	rm *.o
 
-run: all clear
-	Source
+run: all
+	./Source
