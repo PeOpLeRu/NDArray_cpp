@@ -52,6 +52,7 @@ int main()
 
 	std::cout << "arr * transposed arr == \n" << arr * arr.transpose() << std::endl << std::endl;
 
+	std::cout << "----------------- Info about arr * arr.transpose() -----------------" << std::endl;
 	auto for_test = arr * arr.transpose();
 	std::cout << "max == " << for_test.max() << std::endl;
 	std::cout << "min == " << for_test.min() << std::endl;
@@ -60,7 +61,16 @@ int main()
 
 	std::cout << "summ of " << for_test.get_row(1) << " == " << for_test.get_row(1).summ() << std::endl;
 	std::cout << "min of " << for_test.get_row(1) << " == " << for_test.get_row(1).min() << std::endl;
-	std::cout << "min of " << for_test.get_row(2) << " == " << for_test.get_row(2).min() << std::endl;
+	std::cout << "min of " << for_test.get_row(2) << " == " << for_test.get_row(2).min() << std::endl << std::endl;
+
+
+	std::cout << "max(0) == " << for_test.max(0) << std::endl;	// Здесь задаем оси для сокращения (столбец)
+	std::cout << "min(0) == " << for_test.min(0) << std::endl;
+	std::cout << "avg(0) == " << for_test.avg(0) << std::endl << std::endl;
+	
+	std::cout << "max(1) == " << for_test.max(1) << std::endl;	// Здесь задаем оси для сокращения (строка)
+	std::cout << "min(1) == " << for_test.min(1) << std::endl;
+	std::cout << "avg(1) == " << for_test.avg(1) << std::endl << std::endl;
 	//std::cout << arr[1];
 	//NDArray<int>::random_values(1);
 

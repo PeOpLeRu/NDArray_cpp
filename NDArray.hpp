@@ -153,9 +153,9 @@ public:
 		return element_wise_operator(other, [](T a, T b) {return a / b; });
 	}
 
-	T summ(T start_init = 0)
+	T summ()
 	{
-		T res(start_init);
+		T res(0);
 
 		for (int i = 0; i < this->shape.first; i++)
 		{
@@ -166,6 +166,44 @@ public:
 		}
 
 		return res;
+	}
+
+	NDArray summ(int axis)	 // 0 - столбцы; 1 - строки
+	{
+		assert((axis == 0 || axis == 1) && "axis not correct!");
+
+		if (axis == 0)	// 0 - столбцы
+		{
+			NDArray res(this->get_size_cols(), 0);
+
+			NDArray temp(this->get_size_rows());
+			for (int i = 0; i < this->get_size_cols(); i++)
+			{
+				temp = (*this).get_col(i);
+				for (int j = 0; j  < temp.size; j ++)
+				{
+					res[i] += temp[j];
+				}
+			}
+
+			return res;
+		}
+		else	// 1 - строки
+		{
+			NDArray res(this->get_size_rows(), 0);
+
+			NDArray temp(this->get_size_cols());
+			for (int i = 0; i < this->get_size_rows(); i++)
+			{
+				temp = (*this).get_row(i);
+				for (int j = 0; j < temp.size; j++)
+				{
+					res[i] += temp[j];
+				}
+			}
+
+			return res;
+		}
 	}
 
 	T max()	// Операция сокращения: максимум для определенной размерности
@@ -183,6 +221,50 @@ public:
 		return res;
 	}
 
+	NDArray max(int axis)	// Операция сокращения: максимум для определенной размерности
+	{
+		assert((axis == 0 || axis == 1) && "axis not correct!");
+
+		if (axis == 0)	// 0 - столбцы
+		{
+			NDArray  res(this->get_size_cols(), 0);
+
+			NDArray temp(this->get_size_rows());
+			T _max;
+			for (int i = 0; i < this->get_size_cols(); i++)
+			{
+				temp = (*this).get_col(i);
+				_max = temp[0];
+				for (int j = 1; j < temp.size; j++)
+				{
+					_max = _max < temp[j] ? temp[j] : _max;
+				}
+				res[i] = _max;
+			}
+
+			return res;
+		}
+		else	// 1 - строки
+		{
+			NDArray  res(this->get_size_rows(), 0);
+
+			NDArray temp(this->get_size_cols());
+			T _max;
+			for (int i = 0; i < this->get_size_rows(); i++)
+			{
+				temp = (*this).get_row(i);
+				_max = temp[0];
+				for (int j = 1; j < temp.size; j++)
+				{
+					_max = _max < temp[j] ? temp[j] : _max;
+				}
+				res[i] = _max;
+			}
+
+			return res;
+		}
+	}
+
 	T min()	// Операция сокращения: минимум для определенной размерности
 	{
 		T  res = (*this)[std::make_pair(0, 0)];
@@ -198,9 +280,85 @@ public:
 		return res;
 	}
 
+	NDArray min(int axis)	// Операция сокращения: минимум для определенной размерности
+	{
+		assert((axis == 0 || axis == 1) && "axis not correct!");
+
+		if (axis == 0)	// 0 - столбцы
+		{
+			NDArray  res(this->get_size_cols(), 0);
+
+			NDArray temp(this->get_size_rows());
+			T _min;
+			for (int i = 0; i < this->get_size_cols(); i++)
+			{
+				temp = (*this).get_col(i);
+				_min = temp[0];
+				for (int j = 1; j < temp.size; j++)
+				{
+					_min = _min > temp[j] ? temp[j] : _min;
+				}
+				res[i] = _min;
+			}
+
+			return res;
+		}
+		else	// 1 - строки
+		{
+			NDArray  res(this->get_size_rows(), 0);
+
+			NDArray temp(this->get_size_cols());
+			T _min;
+			for (int i = 0; i < this->get_size_rows(); i++)
+			{
+				temp = (*this).get_row(i);
+				_min = temp[0];
+				for (int j = 1; j < temp.size; j++)
+				{
+					_min = _min > temp[j] ? temp[j] : _min;
+				}
+				res[i] = _min;
+			}
+
+			return res;
+		}
+	}
+
 	T avg()	// Операция сокращения: среднее для определенной размерности
 	{
 		return this->summ() / this->size;
+	}
+
+	NDArray avg(int axis)	// Операция сокращения: среднее для определенной размерности
+	{
+		assert((axis == 0 || axis == 1) && "axis not correct!");
+
+		if (axis == 0)	// 0 - столбцы
+		{
+			NDArray  res(this->get_size_cols(), 0);
+
+			NDArray temp(this->get_size_cols());
+			temp = this->summ(0);
+
+			for (int i = 0; i < temp.size; i++)
+			{
+				res[i] = temp[i] / this->get_size_cols();
+			}
+			return res;
+		}
+		else	// 1 - строки
+		{
+			NDArray res(this->get_size_rows(), 0);
+
+			NDArray temp(this->get_size_rows());
+			temp = this->summ(1);
+
+			for (int i = 0; i < temp.size; i++)
+			{
+				res[i] = temp[i] / this->get_size_rows();
+			}
+			return res;
+		}
 	}
 
 	T& operator[](std::pair<int, int> indexes) const
