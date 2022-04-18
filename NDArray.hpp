@@ -428,7 +428,7 @@ public:
 		res.shape.second = res.size;
 		res.offset = new std::vector<int>;
 
-		for (int i = 0; i < this->size; i++)
+		for (int i = 0; i < this->shape.second; i++)
 		{
 			res.offset->push_back(n * this->shape.second + i);
 		}
@@ -446,7 +446,7 @@ public:
 		res.shape.second = res.size;
 		res.offset = new std::vector<int>;
 
-		for (int i = 0; i < this->size; i++)
+		for (int i = 0; i < this->shape.first; i++)
 		{
 			res.offset->push_back(i * this->shape.second + n);
 		}
