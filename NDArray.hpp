@@ -454,6 +454,50 @@ public:
 		return res;
 	}
 
+	NDArray get_slice(int start, int stop, int step = 1) const	// Взятие среза без выделения новой памяти
+	{
+		NDArray res(0);
+		res.offset = new std::vector<int>;
+
+		if (this->ndim == 2)
+		{
+			assert(start >= 0 && start < stop && stop <= this->get_size_rows() && step > 0);
+
+			for (int i = start; i < stop; i += step)
+			{
+				for (int j = 0; j < this->get_size_cols(); j++)
+				{
+					res.offset->push_back(i * this->get_size_cols() + j);
+				}
+			}
+		}
+		else
+		{
+			assert(start >= 0 && start < stop && stop <= this->get_size_cols() && step > 0);
+
+			if (this->offset)
+			{
+				for (int i = start; i < stop; i += step)
+				{
+					res.offset->push_back(this->offset->at(i));
+				}
+			}
+			else
+			{
+				for (int i = start; i < stop; i += step)
+				{
+					res.offset->push_back(i);
+				}
+			}
+		}
+
+		res.ptr = this->ptr;
+		res.size = res.offset->size();
+		res.shape.second = res.offset->size();
+
+		return res;
+	}
+
 	int get_size()
 	{
 		return this->size;

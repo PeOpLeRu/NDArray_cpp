@@ -78,5 +78,11 @@ int main()
 
 	std::cout << "Check + operator: arr + transposed arr == \n" << arr + arr.transpose() << std::endl << std::endl;
 
+	std::cout << "Check method: arr.get_slice(0, arr.get_size_rows(), 2)  == \n" << arr.get_slice(0, arr.get_size_rows(), 2) << std::endl << std::endl;
+
+	std::cout << "Check method: arr.get_slice(0, arr.get_size_rows(), 2).get_slice(0, 6, 2)  == \n" << arr.get_slice(0, arr.get_size_rows(), 2).get_slice(0, 6, 2) << std::endl << std::endl;
+
+	std::cout << "--------- End ---------";
+
 	return 0;
 }
