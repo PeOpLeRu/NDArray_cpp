@@ -17,10 +17,10 @@ int main()
 		arr_1[i] = i;
 		arr_2[i] = i + 1;
 	}
-
+	
 	std::cout << "Arr 1 == " << arr_1 << std::endl << std::endl;
 	std::cout << "Arr 2 == " << arr_2 << std::endl << std::endl;
-	auto res = arr_1 * arr_2;
+	auto res = arr_1.element_multiplication(arr_2);
 	std::cout << "Res multiply === " << res << std::endl << std::endl;
 
 	NDArray<int> copy_arr = arr;
@@ -73,6 +73,10 @@ int main()
 	std::cout << "avg(1) == " << for_test.avg(1) << std::endl << std::endl;
 	//std::cout << arr[1];
 	//NDArray<int>::random_values(1);
+
+	std::cout << "Check element_multiplication: arr * transposed arr == \n" << arr.element_multiplication(arr.transpose()) << std::endl << std::endl;
+
+	std::cout << "Check + operator: arr + transposed arr == \n" << arr + arr.transpose() << std::endl << std::endl;
 
 	return 0;
 }

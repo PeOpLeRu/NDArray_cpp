@@ -106,49 +106,43 @@ public:
 		return NDArray::random_values(1, size_cols);
 	}
 
-	NDArray operator+(NDArray& other)	// Оператор поэлементного сложения
+	NDArray operator+(NDArray other)	// Оператор поэлементного сложения
 	{
 		return element_wise_operator(other, [](T a, T b) {return a + b; });
 	}
 
-	NDArray operator-(NDArray& other)	// Оператор поэлементного вычитания
+	NDArray operator-(NDArray other)	// Оператор поэлементного вычитания
 	{
 		return element_wise_operator(other, [](T a, T b) {return a - b; });
 	}
 
-	NDArray operator*(NDArray other)	// Оператор поэлементного умножения и матричного умножения
+	NDArray element_multiplication(NDArray other)	// Оператор поэлементного умножения
 	{
-		if (this->ndim == 2)
-		{
-			assert(this->shape.second == other.shape.first);
+		assert(this->shape == other.shape);
 
-			NDArray res(this->shape.first, other.shape.second, 0);
+		NDArray res = element_wise_operator(other, [](T a, T b) {return a * b; });
 
-			for (int i = 0; i < this->shape.first; i++)
-			{
-				for (int j = 0; j < other.shape.second; j++)
-				{
-					res.get_row(i)[j] = (this->get_row(i) * other.get_col(j))[0];
-				}
-			}
-
-			return res;
-		}
-		else if (this->ndim == 1)
-		{
-			NDArray res = element_wise_operator(other, [](T a, T b) {return a * b; });
-
-			return NDArray(1, res.summ());
-		}
-		else
-		{
-			throw "Current NDIM not supported in operator*";
-		}
-
-		return NDArray(1, 0);
+		return res;
 	}
 
-	NDArray operator/(NDArray& other)	// Оператор поэлементного деления
+	NDArray operator*(NDArray other)	// Оператор матричного умножения
+	{
+		assert(this->shape.second == other.shape.first);
+
+		NDArray res(this->shape.first, other.shape.second, 0);
+
+		for (int i = 0; i < this->shape.first; i++)
+		{
+			for (int j = 0; j < other.shape.second; j++)
+			{
+				res.get_row(i)[j] = (this->get_row(i).element_multiplication(other.get_col(j))).summ();
+			}
+		}
+
+		return res;
+	}
+
+	NDArray operator/(NDArray other)	// Оператор поэлементного деления
 	{
 		return element_wise_operator(other, [](T a, T b) {return a / b; });
 	}
@@ -520,11 +514,14 @@ private:
 	{
 		assert(this->shape == other.shape && "Shapes are not equivalent");
 
-		NDArray res(this->size);
+		NDArray res(this->shape.first, this->shape.second, 0);
 
-		for (int i = 0; i < this->size; i++)
+		for (int i = 0; i < res.shape.first; i++)
 		{
-			res[i] = func((*this)[i], other[i]);
+			for (int j = 0; j < res.shape.second; j++)
+			{
+				res[std::make_pair(i, j)] = func((*this)[std::make_pair(i, j)], other[std::make_pair(i, j)]);
+			}
 		}
 
 		return res;
